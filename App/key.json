@@ -1,12 +1,12 @@
 {
-  "type": "service_account",
-  "project_id": "graveyard-management-system",
-  "private_key_id": "83700e624fb73a9d883d89b5b995525b2cdc0daf",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCqDHw34Giv60Ox\noVv2KR/4Tah3bpXvfzpknRwxhBfeMAkg/SeX+FOMCfjOD6JdxQFasD4iGbtDs6od\nEDCjMJU2Vtf6amXTQ4jbpvwJXY9AlFtI2GTvBakMU4T1/J923a/4BP30ewtQvcpk\n8d6dsDTXF+AhxpVHHp1xkVik8o0UdAov338f6yYkp7pIZx0XqKZ/r8BBNu6kmJRq\n4VenLRwSJFwKfessRMmXG8ADXIInap5xa68koRyhmkWa89OywvB0zbmBaUuJuhub\nkgoI6WzxJwMZsi9ZWMih0cCpyA6RK/haaDzDKiDV3Bl0zHqaa0/qknJgawYu4c1Z\n6MWdVnWbAgMBAAECggEAAhRVAXnqr7C8krWebY/yPRPI2yG7w6RWaYWAboXfd6tj\naakJMnEitkq9oY75vNgLadeMAYzdHsg7qQQHUHeNvXCa5WZyCFHrkZMdaHpDeIru\nel2QtP9R5h+DGapCWeMsG7NhGnQ/NUszb88pIb3s7wVcMTq4M+QV1QeTZAtVJdlz\nHuWftNcFN9jUP6HMwIAaDobHqEKltEKAisfTaKoIW0ZsIWAvvO0mf/0q5HZX/HLc\naxLYqM8L1kdRr0qmQYHGieH97Af26md0OdOnmLK4iHUm8xMY1uUX6Ngk5JVvSZkP\nGLPamn/lRjbc/RTecHs7oJ8iyZ+RdIIaqemeplHAQQKBgQDhL1bbECsVh+gK3x4g\nbz4XQS9dOQdIuIxPiiTjRbEB/7p3cF7VKSP8fzD3vJVV4GQSKnmBirjHELAZgH4F\ndJtK/qVy3gc3u7MFq0UKchmMD4Aj02Bnb+lV3R1Ltg9bHfJjvy6jaCIg0ckF4azI\nHbQGNyAk2pp/T82a5D7HboBKfwKBgQDBUZ7iQoPhK+DzgrY5Z7rqxy2wJ1GFDMCg\nPYSpcEg3CtYqRBxTNsfrBQHp4RDDXKofgHQ3tTXFDu3xK2pDOCHE6byOhdfkJbxc\nod7O2NCwED1ibyekjQu3Eo4YfxQ2sL8lZ+yhP1M72NAPwlVKQgG8+FBLBn13ltbU\nRuXxRk8u5QKBgDyDyEeelLV4jHc/do0o1/rP3bajuL1mOu61JSyece8jliy62gFW\nyQD1/WbWGxu07a+kEnspmHaGmYyA51z39TO2MygnWrEzk+yWFju0ZgEpuTnneCTU\nAlS80z6hcob+CUGdAx+OwH0pY2hdOV2d/d8duVmuFY7ZF1vksqpNm9RpAoGBAKvb\nOIjiIsVJMbio6gAMZBGVMduYiJLkLFYHemj6xWgRPSTj2d5sI7udfv8AsttKBH7u\nveJMONnPFN5B/zx0qSiZtaNp/uv2VAZxbFasTpFGTpu0PyS8sr50Q1gpmLmp1LOX\nOLh8SC066HQqCZJzLYJlqVOZGG747FBYGtCr9Xa1AoGBAK/oPe3ok9oJYat6DGYT\n57SLeoRaBFqXOMV9fW5ZPngKvjdogXRD8PTbtfGc1Si31p6yD2IiHqlL5ur3EGjL\nUVTciP0YAxh2AY7auT6twO2e1VoODteO3NJ1CLVXlatns5sNdWZLdtLKMvRARQVD\nCWouwdxipq4lwIGax2YLU1in\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-lmpkj@graveyard-management-system.iam.gserviceaccount.com",
-  "client_id": "114450060278419460928",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-lmpkj%40graveyard-management-system.iam.gserviceaccount.com"
+  "type": "",
+  "project_id": "",
+  "private_key_id": "",
+  "private_key": "-",
+  "client_email": "",
+  "client_id": "",
+  "auth_uri": "",
+  "token_uri": "",
+  "auth_provider_x509_cert_url": "",
+  "client_x509_cert_url": ""
 }
