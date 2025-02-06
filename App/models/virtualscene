@@ -1,0 +1,17 @@
+from App.database import db
+from flask_sqlalchemy import SQLAlchemy
+
+
+
+class VirtualScene(db.Model):
+    __tablename__ = "virtualscenes"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    navigation_items = db.relationship("NavigationItem", backref="virtualscene", lazy=True)
+
+    def get_json(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "navigation_items": [item.get_json() for item in self.navigation_items]
+        }
