@@ -4,7 +4,6 @@ db = SQLAlchemy()
 
 class Package(db.Model):
     _tablename_ = 'packages'
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)

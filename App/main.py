@@ -19,7 +19,8 @@ from App.views import (
     deceased_views,
     customer_views,
     reservation_views,
-    payment_views
+    payment_views,
+    tour_views
 )
 
 # New views must be imported and added to this list
@@ -32,7 +33,8 @@ views = [
     deceased_views,
     customer_views,
     reservation_views,
-    payment_views
+    payment_views,
+    tour_views
 ]
 
 def add_views(app, views):

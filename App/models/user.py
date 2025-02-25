@@ -5,6 +5,7 @@ from App.database import db
 # 0 - developer
 # 1 - admin
 # 2 - employee
+# 3 - customer
 class User():
 
     def __init__(self, username, password, role, id=None):
