@@ -35,16 +35,10 @@ def create_eulogy():
 def list_files():
     image_folder = os.path.join(os.path.dirname(__file__), "..", "static/images/panoramas")
     try:
-        # Get all files in the directory
         files = os.listdir(image_folder)
-
-        # Filter files by allowed extensions
         valid_extensions = {"jpg", "png", "webp", "jpeg"}
         image_files = [file for file in files if file.split(".")[-1].lower() in valid_extensions]
-
-        # Generate URLs for each image file
         image_urls = [url_for("static", filename=f"/images/panoramas/{image}") for image in image_files]
-
         return jsonify(image_urls)
 
     except Exception as e:
@@ -66,13 +60,10 @@ def fetch_user():
 @cross_origin(supports_credentials=True)
 def callback_google():
     response, status_code = google_callback()
-
-    # Ensure you get the JSON data from the response
     if status_code == 200:
-        data = response  # Get JSON data from the response object
+        data = response
         print(data)
-        print("THIS RAN THO?")
-        # Store the JSON data in the session
+        # print("THIS RAN THO?")
         session['google_data'] = data
         print(f"Session Data: {session.get('google_data')}")
         return redirect("http://localhost:3000/auth")
