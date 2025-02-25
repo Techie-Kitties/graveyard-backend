@@ -6,3 +6,4 @@ from .reservation import *
 from .customer import *
 from .payment import *
 from .payment import *
+from .virtualscene import *

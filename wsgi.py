@@ -1,6 +1,7 @@
 import click, pytest, sys
 from flask import Flask
 from flask.cli import with_appcontext, AppGroup
+from flask_cors import CORS
 
 from App.database import create_db, get_migrate
 from App.main import create_app
@@ -10,7 +11,14 @@ from App.controllers import ( create_user, get_all_users )
 
 app = create_app()
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///your_database.db'
+app.config['SECRET_KEY'] = "SECRET"
+app.config['SESSION_COOKIE_DOMAIN'] = '.localhost'
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = False
+CORS(app, supports_credentials=True)
 migrate = get_migrate(app)
+
+
 
 # This command creates and initializes the database
 @app.cli.command("init", help="Creates and initializes the database")
