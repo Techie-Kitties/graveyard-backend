@@ -2,12 +2,11 @@ import json
 import os
 import requests
 
-from flask import redirect, jsonify, request
+from flask import redirect, jsonify, request, session
 
 key_path = os.path.join(os.path.dirname(__file__), "../key.json")
 with open(key_path, "r") as file:
     config = json.load(file)
-
 
 def oauth_google():
     client_id = config.get("client_id")
@@ -25,6 +24,7 @@ def google_callback():
     client_id = config.get("client_id")
     client_secret = config.get("client_secret")
     redirect_uri = "http://localhost:8080/callback"
+
     data = {
         "code": code,
         "client_id": client_id,
@@ -41,5 +41,11 @@ def google_callback():
     headers = {"Authorization": f"Bearer {access_token}"}
     user_info_response = requests.get(user_info_url, headers=headers)
     user_info = user_info_response.json()
-    print(user_info)
-    return user_info, 200
+    session['google_data'] = {
+        "id": data.get("id"),
+        "email": data.get("email"),
+        "name": data.get("name"),
+        "picture": data.get("picture")
+    }
+    # print("USER INFO",user_info)
+    return jsonify(user_info)

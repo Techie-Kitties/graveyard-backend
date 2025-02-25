@@ -1,6 +1,7 @@
 import os
 
-from flask import Blueprint, render_template, jsonify, request, send_from_directory, url_for, redirect, session
+from flask import Blueprint, render_template, jsonify, request, send_from_directory, url_for, redirect, session, \
+    make_response
 from flask_cors import cross_origin
 from flask_jwt_extended import jwt_required, get_jwt
 from datetime import datetime, date
@@ -45,31 +46,44 @@ def list_files():
         return jsonify({"error": str(e)}), 500
 
 
+
+
+
 @graveyard_views.route('/login_google', methods=['get'])
 def login_google():
     return oauth_google()
 
-@graveyard_views.route('/api/fetchUser', methods=['GET'])
-def fetch_user():
-    print(f"Session Data: {session.get('google_data')}")
-    data = session.get('google_data')
-    return jsonify(data)
+
+# @graveyard_views.route('/api/fetchUser', methods=['GET'])
+# @cross_origin(supports_credentials=True)
+# def fetch_user():
+#     print(f"Session Data FETCH: {session.get('google_data')}")
+#     print("DATA:", session.keys())
+#     data = session.get('google_data')
+#     return jsonify(data)
 
 
 @graveyard_views.route('/callback', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def callback_google():
-    response, status_code = google_callback()
-    if status_code == 200:
-        data = response
-        print(data)
-        # print("THIS RAN THO?")
-        session['google_data'] = data
-        print(f"Session Data: {session.get('google_data')}")
-        return redirect("http://localhost:3000/auth")
-    else:
-        # Handle error case if needed
-        return jsonify({"error": "Failed to authenticate with Google"}), 400
+    response = google_callback()
+    # status_code = response.status_code
+    data = response.get_json()
+    session['google_data'] = {
+        "id": data.get("id"),
+        "email": data.get("email"),
+        "name": data.get("name"),
+        "picture": data.get("picture")
+    }
 
+    redirect_response = redirect("http://localhost:3000/auth")
+    google_data = session.get('google_data', {})
+    for key, value in google_data.items():
+        redirect_response.set_cookie(
+            key=key,
+            value=str(value),
+            samesite='None',
+            secure=True
+        )
 
-
+    return redirect_response

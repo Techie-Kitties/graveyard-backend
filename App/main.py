@@ -52,17 +52,24 @@ def loadConfig(app, config):
         app.config['JWT_EXPIRATION_DELTA'] =  timedelta(days=int(os.environ.get('JWT_EXPIRATION_DELTA')))
         app.config['DEBUG'] = os.environ.get('ENV').upper() != 'PRODUCTION'
         app.config['ENV'] = os.environ.get('ENV')
-        
+
     for key, value in config.items():
         app.config[key] = config[key]
 
 def create_app(config={}):
     app = Flask(__name__, static_url_path='/static')
-    CORS(app)
+
     loadConfig(app, config)
+    CORS(app, supports_credentials=True, origins="https://localhost:3000")
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.config['PREFERRED_URL_SCHEME'] = 'https'
     app.config['UPLOADED_PHOTOS_DEST'] = "App/uploads"
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///your_database.db'
+    app.config['SECRET_KEY'] = "SECRET"
+    app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+    app.config['SESSION_COOKIE_SECURE'] = True
+    app.config['SECRET_KEY'] = "your_secret_key"
+
     photos = UploadSet('photos', TEXT + DOCUMENTS + IMAGES)
     configure_uploads(app, photos)
     add_views(app, views)

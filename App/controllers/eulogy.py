@@ -1,6 +1,6 @@
 import google.generativeai as genai
 
-genai.configure(api_key="")
+genai.configure(api_key="AIzaSyA-TQwDJdyHJRdY1JpIS5H8euFimjQDsmQ")
 def generate_eulogy(name, birth_date, death_date, relationships, occupation, personality_traits, hobbies, accomplishments, anecdotes, tone):
     prompt = f"""
     Compose a heartfelt and celebratory eulogy for {name}, who was born on {birth_date} and passed away on {death_date}.
