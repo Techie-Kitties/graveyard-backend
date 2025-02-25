@@ -1,6 +1,18 @@
-import google.generativeai as genai
+import os
 
-genai.configure(api_key="")
+import google.generativeai as genai
+import json
+
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PARENT_DIR = os.path.dirname(BASE_DIR)
+config = os.path.join(PARENT_DIR, 'key.json')
+
+with open(config, 'r') as file:
+    config_data = json.load(file)
+
+api_key = config_data.get('genai_api_key')
+genai.configure(api_key=api_key)
 def generate_eulogy(name, birth_date, death_date, relationships, occupation, personality_traits, hobbies, accomplishments, anecdotes, tone):
     prompt = f"""
     Compose a heartfelt and celebratory eulogy for {name}, who was born on {birth_date} and passed away on {death_date}.
