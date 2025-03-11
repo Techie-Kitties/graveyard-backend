@@ -23,7 +23,7 @@ def generate_eulogy(name, birth_date, death_date, relationships, occupation, per
     Use a {tone} tone. Make the response as long as possible for testing.
     """
 
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('gemini-2.0-flash')
     response = model.generate_content(prompt)
     return response.text
 # name = "John Doe"
