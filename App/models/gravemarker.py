@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+from App.database import db
 class GraveMarker(db.Model):
     __tablename__ = 'grave_marker'
     id = db.Column(db.Integer, primary_key=True)

@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+from App.database import db
 class FloralWreathS(db.Model):
     __tablename__ = 'floral_wreath'
     id = db.Column(db.Integer, primary_key=True)

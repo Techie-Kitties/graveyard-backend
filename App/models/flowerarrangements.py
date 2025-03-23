@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+from App.database import db
 class FlowerArrangements(db.Model):
     __tablename__ = 'flower_arrangements'
     id = db.Column(db.Integer, primary_key=True)

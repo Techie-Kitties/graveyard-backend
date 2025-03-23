@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+from App.database import db
 class SocialMediaAnnouncement(db.Model):
     __tablename__ = 'social_media_announcement'
     id = db.Column(db.Integer, primary_key=True)

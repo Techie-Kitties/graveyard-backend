@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+from App.database import db
 class BodyPreparation(db.Model):
     __tablename__ = 'body_preparation'
     id = db.Column(db.Integer, primary_key=True)

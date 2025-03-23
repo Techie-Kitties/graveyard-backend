@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+from App.database import db
 class FamilyTransport(db.Model):
     __tablename__ = 'family_transport'
     id = db.Column(db.Integer, primary_key=True)
