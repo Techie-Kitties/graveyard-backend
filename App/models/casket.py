@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+from App.database import db
 class Casket(db.Model):
     __tablename__ = 'casket'
     id = db.Column(db.Integer, primary_key=True)

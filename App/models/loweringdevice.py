@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+from App.database import db
 class LoweringDevice(db.Model):
     __tablename__ = 'lowering_device'
     id = db.Column(db.Integer, primary_key=True)
