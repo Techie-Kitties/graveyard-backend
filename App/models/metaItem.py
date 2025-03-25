@@ -1,8 +1,8 @@
-from App.db import db
+from App.database import db
 from flask_sqlalchemy import SQLAlchemy
 
 class MetaItem(db.Model):
-    __tablename__ = "navigationitems"
+    __tablename__ = "metaitems"
     id = db.Column(db.Integer, primary_key=True)
     position = db.Column(db.JSON, nullable=False)
     virtualscene_id = db.Column(db.Integer, db.ForeignKey('virtualscenes.id'), nullable=False)

@@ -1,6 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from App.database import db
 class MemorialProgram(db.Model):
     __tablename__ = 'memorial_program'
     id = db.Column(db.Integer, primary_key=True)

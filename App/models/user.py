@@ -31,7 +31,7 @@ class User():
         """Create hashed password."""
         if not isinstance(password, str):
             raise TypeError("password must be a string")
-        self._password = generate_password_hash(password, method='sha256')
+        self._password = generate_password_hash(password)
 
     def check_password(self, password):
         """Check hashed password."""

@@ -1,6 +1,6 @@
 from App.database import db
 from datetime import datetime, date
-
+from App.database import db
 class Grave():
     def __init__(self, plot_num, graveyard_id, grave_type, id=None):
         self.set_plot_num(plot_num)

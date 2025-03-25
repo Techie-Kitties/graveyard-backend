@@ -8,3 +8,4 @@ from .reservation import *
 from .payment import *
 from .eulogy import *
 from .tour import *
+from .package import *

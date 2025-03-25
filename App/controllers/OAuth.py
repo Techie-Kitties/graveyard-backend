@@ -9,8 +9,8 @@ with open(key_path, "r") as file:
     config = json.load(file)
 
 def oauth_google():
-    client_id = config.get("client_id")
-    redirect_uri = config.get("redirect_uri")
+    client_id = "1021515142000-1vibql027boo1al57577451c0pui1v9e.apps.googleusercontent.com"
+    redirect_uri = "http://localhost:8080/callback"
     scope = "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
     auth_url = f"https://accounts.google.com/o/oauth2/auth?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}"
     return redirect(auth_url)
@@ -23,7 +23,7 @@ def google_callback():
     token_url = "https://oauth2.googleapis.com/token"
     client_id = config.get("client_id")
     client_secret = config.get("client_secret")
-    redirect_uri = "http://localhost:8080/callback"
+    redirect_uri = "localhost:8080/callback"
 
     data = {
         "code": code,
@@ -47,5 +47,6 @@ def google_callback():
         "name": data.get("name"),
         "picture": data.get("picture")
     }
-    # print("USER INFO",user_info)
+    google_data = session.get('google_data', {})
+    print(google_data)
     return jsonify(user_info)
