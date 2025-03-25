@@ -1,6 +1,4 @@
 from App.database import db
-from flask_sqlalchemy import SQLAlchemy
-
 
 class NavigationItem(db.Model):
     __tablename__ = "navigationitems"
@@ -18,3 +16,6 @@ class NavigationItem(db.Model):
             "position": self.position,
             "virtualscene_id": self.virtualscene_id
         }
+
+    def __repr__(self):
+        return f"<NavigationItem {self.id}, VirtualScene {self.virtualscene_id}>"

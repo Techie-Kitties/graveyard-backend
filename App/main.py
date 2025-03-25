@@ -7,9 +7,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.datastructures import  FileStorage
 from datetime import timedelta
 from flask_jwt_extended import JWTManager
-
-
-from App.database import create_db
+from App.database import init_db
 
 from App.views import (
     index_views,
@@ -20,7 +18,8 @@ from App.views import (
     customer_views,
     reservation_views,
     payment_views,
-    tour_views
+    tour_views,
+    package_views
 )
 
 # New views must be imported and added to this list
@@ -34,7 +33,8 @@ views = [
     customer_views,
     reservation_views,
     payment_views,
-    tour_views
+    tour_views,
+    package_views
 ]
 
 def add_views(app, views):
@@ -60,7 +60,7 @@ def create_app(config={}):
     app = Flask(__name__, static_url_path='/static')
 
     loadConfig(app, config)
-    CORS(app, supports_credentials=True, origins="https://localhost:3000")
+    CORS(app, supports_credentials=True, origins="http://localhost:3000")
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.config['PREFERRED_URL_SCHEME'] = 'https'
     app.config['UPLOADED_PHOTOS_DEST'] = "App/uploads"
@@ -74,5 +74,6 @@ def create_app(config={}):
     configure_uploads(app, photos)
     add_views(app, views)
     JWTManager(app)
+    init_db(app)
     app.app_context().push()
     return app

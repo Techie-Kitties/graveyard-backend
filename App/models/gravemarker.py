@@ -1,5 +1,4 @@
 from flask_sqlalchemy import SQLAlchemy
-
 from App.database import db
 class GraveMarker(db.Model):
     __tablename__ = 'grave_marker'

@@ -1,5 +1,4 @@
 from flask_sqlalchemy import SQLAlchemy
-
 from App.database import db
 class Casket(db.Model):
     __tablename__ = 'casket'

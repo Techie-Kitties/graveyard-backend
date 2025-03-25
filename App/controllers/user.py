@@ -2,9 +2,9 @@ from App.models import User
 from werkzeug.security import check_password_hash, generate_password_hash
 from App.database import db
 
-def create_user(username, password, role, id=None):
+def create_user(username, password, role=1, id=None):
     newuser = User(username=username, password=password, role=role, id=id)
-    doc_ref = db.collection(u'Users').document(newuser.get_id()).set(newuser.toDict())
+    # doc_ref = db.collection(u'Users').document(newuser.get_id()).set(newuser.toDict())
     return newuser
 
 def create_user_dict(dict):

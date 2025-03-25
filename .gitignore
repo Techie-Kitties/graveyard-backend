@@ -4,6 +4,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
+
+#Keys
+key.json
+
 # C extensions
 *.so
 
@@ -154,3 +159,4 @@ cython_debug/
 #.idea/
 
 node_modules/
+

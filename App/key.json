@@ -4,9 +4,10 @@
   "private_key_id": "",
   "private_key": "-",
   "client_email": "",
-  "client_id": "",
+  "client_id": "1021515142000-1vibql027boo1al57577451c0pui1v9e.apps.googleusercontent.com",
   "auth_uri": "",
   "token_uri": "",
   "auth_provider_x509_cert_url": "",
-  "client_x509_cert_url": ""
+  "client_x509_cert_url": "",
+  "genai_api_key": "AIzaSyADQgXp7cGhpsK0w1SJ6k8v1DTi22_Bd8A"
 }

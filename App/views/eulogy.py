@@ -66,8 +66,9 @@ def login_google():
 @graveyard_views.route('/callback', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def callback_google():
-    response = google_callback()
+    response,status = google_callback()
     # status_code = response.status_code
+    print(response.get_json())
     data = response.get_json()
     session['google_data'] = {
         "id": data.get("id"),
@@ -78,6 +79,7 @@ def callback_google():
 
     redirect_response = redirect("http://localhost:3000/auth")
     google_data = session.get('google_data', {})
+    print(google_data)
     for key, value in google_data.items():
         redirect_response.set_cookie(
             key=key,
