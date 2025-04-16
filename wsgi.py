@@ -6,7 +6,7 @@ from flask_cors import CORS
 from App.database import db,create_db, get_migrate
 
 from App.main import create_app
-from App.controllers import ( create_user, get_all_users ,get_all_packages)
+from App.controllers import ( create_user, get_all_users ,get_all_packages,initialize)
 
 # This commands file allow you to create convenient CLI commands for testing controllers
 
@@ -17,9 +17,10 @@ migrate = get_migrate(app)
 
 # This command creates and initializes the database
 @app.cli.command("init", help="Creates and initializes the database")
-def initialize():
+def initialize_db():
     db.drop_all()
     db.create_all()
+    initialize()
     print('database intialized')
 
 '''
@@ -52,15 +53,6 @@ def list_user_command(format):
 
 app.cli.add_command(user_cli) # add the group to the cli
 
-
-'''
-Generic Commands
-'''
-
-# @app.cli.command("init")
-# def initialize():
-#     create_db(app)
-#     print('database intialized')
 
 '''
 Test Commands

@@ -9,3 +9,4 @@ from .navigationitem import *
 from .virtualscene import *
 from .metaItem import *
 from .package import *
+from .customPackage import *

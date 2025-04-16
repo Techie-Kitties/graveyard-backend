@@ -7,9 +7,9 @@ from App.database import db
 def login(username, password):
     user = User.query.filter_by(username=username).first()
     if user and user.check_password(password):
-        print("CHECKS OUT")
+        # print("CHECKS OUT")
         return create_access_token(identity=username)
-    print("NOPE")
+    # print("NOPE")
     return None
 
 

@@ -3,7 +3,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from App.database import db
 
 
-def create_user(username, password, role=1,):
+def create_user(username, password, role=3,):
     if User.query.filter_by(username=username).first():
         print("already exists")
         return "Error: user already exists"

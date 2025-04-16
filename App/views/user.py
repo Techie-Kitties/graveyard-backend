@@ -89,16 +89,14 @@ def delete_user_route():
 def login_route():
     data = request.json
     if not data or 'username' not in data or 'password' not in data:
-        print("No")
+        # print("No")
         return jsonify({"message": "Missing username or password"}), 400
 
     username = data['username']
     password = data['password']
-    print(username,password)
     access_token = login(username=username, password=password)
 
     if access_token is None:
-        print("Nopp")
         return jsonify({"msg": "Invalid username or password"}), 401
 
     resp = jsonify({"msg": "Login successful"})

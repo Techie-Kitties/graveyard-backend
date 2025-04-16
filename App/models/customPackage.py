@@ -65,3 +65,34 @@ class customPackage(db.Model):
             "casket_price": self.casket_price,
             "permanent_casket_price": self.permanent_casket_price,
         }
+
+    @classmethod
+    def initialize_defaults(cls):
+        #have to make sure there is no entry already
+        if cls.query.first() is not None:
+            return
+
+        default_values = {
+            "base_price": 1245.75,
+            "cemetery_plot_price": 32.50,
+            "grave_marker_price": 215.00,
+            "body_preparation_price": 365.00,
+            "funeral_transport_price": 425.00,
+            "family_transport_price": 510.25,
+            "safekeeping_price_per_day": 275.00,
+            "prayer_room_price": 185.00,
+            "memorial_program_price_per_copy": 22.00,
+            "custom_programs_price": 120.00,
+            "social_media_announcement_price": 45.00,
+            "multimedia_slideshow_price": 130.00,
+            "floral_wreath_price": 160.00,
+            "custom_floral_sprays_price": 225.00,
+            "additional_flower_arrangements_price": 95.00,
+            "professional_officiant_price": 340.00,
+            "casket_price": 1425.00,
+            "permanent_casket_price": 3680.00,
+        }
+
+        default_package = cls(**default_values)
+        db.session.add(default_package)
+        db.session.commit()

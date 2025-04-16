@@ -15,10 +15,14 @@ class User(db.Model):
     google_id = db.Column(db.String(64), unique=True)
 
 
-    def __init__(self, username, password, role):
+    def __init__(self, username, role=3, password=None, google_id=None):
         self.username = username
         self.role = role
-        self.set_password(password)
+        self.google_id = google_id
+
+        if password:
+            self.set_password(password)
+
     def is_oauth_user(self):
         return self.google_id is not None and self.password is None
 
