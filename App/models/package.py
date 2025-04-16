@@ -1,18 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
 from App.database import db
-from App.models.casket import Casket
-from App.models.floralwreath import FloralWreaths
-from App.models.flowerarrangements import FlowerArrangements
-from App.models.bodypreparation import BodyPreparation
-from App.models.funeraltransport import FuneralTransport
-from App.models.familytransport import FamilyTransport
-from App.models.professionalofficiant import ProfessionalOfficiant
-from App.models.memorialprogram import MemorialProgram
-from App.models.announcement import SocialMediaAnnouncement
-from App.models.multimediaslideshow import MultimediaSlideshow
-from App.models.prayerroom import PrayerRoom
-from App.models.permanentcasket import PermanentCasket
-from App.models.loweringdevice import LoweringDevice
 
 class Package(db.Model):
     __tablename__ = 'package'
@@ -88,3 +75,36 @@ class Package(db.Model):
             'permanent_casket': self.permanent_casket,
             'safekeeping_days': self.safekeeping_days
         }
+
+    def update_from_json(self, data):
+        updatable_fields = [
+            'name',
+            'description',
+            'price',
+            'cemetery_plot',
+            'grave_marker',
+            'body_preparation',
+            'funeral_transport',
+            'family_transport',
+            'floral_wreath_size',
+            'memorial_program_count',
+            'prayer_room',
+            'professional_officiant',
+            'social_media_announcement',
+            'multimedia_slideshow',
+            'custom_programs',
+            'custom_floral_sprays',
+            'additional_flower_arrangements',
+            'casket_type',
+            'permanent_casket',
+            'safekeeping_days',
+        ]
+        normalized_fields = {
+            'floral_wreath': 'floral_wreath_size',
+            'memorial_program': 'memorial_program_count',
+        }
+
+        for key, value in data.items():
+            attr = normalized_fields.get(key, key)
+            if attr in updatable_fields:
+                setattr(self, attr, value)
