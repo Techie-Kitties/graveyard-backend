@@ -1,5 +1,4 @@
 from flask_sqlalchemy import SQLAlchemy
-
 from App.database import db
 class FloralWreaths(db.Model):
     __tablename__ = 'floral_wreath'
