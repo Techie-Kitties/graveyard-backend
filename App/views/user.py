@@ -1,5 +1,9 @@
-from flask import Blueprint, render_template, jsonify, request, send_from_directory
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt
+from datetime import timedelta
+
+from flask import Blueprint, render_template, jsonify, request, send_from_directory, redirect
+from flask_cors import CORS, cross_origin
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt, set_access_cookies
+from App.models import User
 
 from App.controllers import (
     create_user, 
@@ -7,9 +11,11 @@ from App.controllers import (
     get_user,
     get_user_by_username,
     delete_user,
-    authenticate,
-    identity
+    login
+    # authenticate,
+    # identity
 )
+from werkzeug.security import generate_password_hash
 
 user_views = Blueprint('user_views', __name__, template_folder='../templates')
 
@@ -77,24 +83,52 @@ def delete_user_route():
         return jsonify({"message":"User Deleted"}), 200
     return jsonify({"message":"User Not Found"}), 404
 
+
 @user_views.route("/login", methods=["POST"])
+@cross_origin(supports_credentials=True)
 def login_route():
     data = request.json
-    if not 'username' in data or not 'password' in data:
-        return jsonify({"message":"Missing parameters"}), 400
+    if not data or 'username' not in data or 'password' not in data:
+        print("No")
+        return jsonify({"message": "Missing username or password"}), 400
 
     username = data['username']
     password = data['password']
-    if authenticate(username=username, password=password) == None:
-        return jsonify({"msg": "Invalid credentials"}), 401
+    print(username,password)
+    access_token = login(username=username, password=password)
 
-    users = get_user_by_username(username)
-    if users:
-        users_array = []
-        for user in users:
-            user_dict = user.to_dict()
-            user_dict['id'] = user.id
-            users_array.append(user_dict)
-        user = users_array[0]
-    access_token = create_access_token(identity=user['id'], additional_claims={'role': user['role']})
-    return jsonify(access_token=access_token, user=user), 200
+    if access_token is None:
+        print("Nopp")
+        return jsonify({"msg": "Invalid username or password"}), 401
+
+    resp = jsonify({"msg": "Login successful"})
+
+    set_access_cookies(resp, access_token)
+    resp.set_cookie("username", username, max_age=3600,httponly=False, samesite='Strict')
+    resp.location = "http://localhost:3000/auth"
+
+    return resp, 200
+
+@user_views.route("/register", methods=["POST"])
+@cross_origin()
+def register_user():
+    data = request.get_json()
+
+    if not data or 'username' not in data or 'password' not in data:
+        return jsonify({"message": "Missing required fields"}), 400
+
+    username = data['username']
+    password = data['password']
+    print(password)
+    new_user = create_user(username=username, password=password)
+    if isinstance(new_user, User):
+        return jsonify({
+            "message": "User registered successfully",
+            "user": {
+                "id": new_user.id,
+                "username": new_user.username,
+                "role": new_user.role
+            }
+        }), 201
+    else:
+        return jsonify({"message": "User is already registered"}), 409
