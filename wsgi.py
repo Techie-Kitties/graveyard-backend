@@ -78,5 +78,8 @@ def user_tests_command(type):
     else:
         sys.exit(pytest.main(["-k", "App"]))
     
+@test.command("unit", help="Run unit tests")
+def run_unit_tests_command():
+    sys.exit(pytest.main(["tests/test_unit_tests.py"]))
 
 app.cli.add_command(test)

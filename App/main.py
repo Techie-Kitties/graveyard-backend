@@ -19,7 +19,8 @@ from App.views import (
     reservation_views,
     payment_views,
     tour_views,
-    package_views
+    package_views,
+    oauth_views
 )
 
 # New views must be imported and added to this list
@@ -34,7 +35,8 @@ views = [
     reservation_views,
     payment_views,
     tour_views,
-    package_views
+    package_views,
+    oauth_views
 ]
 
 def add_views(app, views):
@@ -62,14 +64,17 @@ def create_app(config={}):
     loadConfig(app, config)
     CORS(app, supports_credentials=True, origins="http://localhost:3000")
     app.config['TEMPLATES_AUTO_RELOAD'] = True
-    app.config['PREFERRED_URL_SCHEME'] = 'https'
+    app.config['PREFERRED_URL_SCHEME'] = 'http'
     app.config['UPLOADED_PHOTOS_DEST'] = "App/uploads"
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///your_database.db'
-    app.config['SECRET_KEY'] = "SECRET"
     app.config['SESSION_COOKIE_SAMESITE'] = 'None'
-    app.config['SESSION_COOKIE_SECURE'] = True
-    app.config['SECRET_KEY'] = "your_secret_key"
-
+    app.config['SECRET_KEY'] = "SECRETKEY"
+    app.config["JWT_COOKIE_SECURE"] = False
+    app.config["JWT_TOKEN_LOCATION"] = ["cookies", "headers"]
+    app.config["JWT_COOKIE_CSRF_PROTECT"] = False
+    app.config["JWT_COOKIE_SAMESITE"] = "Lax"
+    app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies"]
+    app.config["JWT_ACCESS_COOKIE_NAME"] = "jwt_token"
     photos = UploadSet('photos', TEXT + DOCUMENTS + IMAGES)
     configure_uploads(app, photos)
     add_views(app, views)
