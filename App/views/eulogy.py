@@ -16,6 +16,8 @@ graveyard_views = Blueprint('graveyard_views', __name__, template_folder='../tem
 
 
 @graveyard_views.route('/api/generateEulogy', methods=['POST'])
+@cross_origin( supports_credentials=True)
+@jwt_required()
 def create_eulogy():
     data = request.json
     name = data.get('name')
@@ -32,26 +34,11 @@ def create_eulogy():
                            accomplishments, anecdotes, tone)
 
 
-@graveyard_views.route('/api/getImages', methods=['get'])
-def list_files():
-    image_folder = os.path.join(os.path.dirname(__file__), "..", "static/images/panoramas")
-    try:
-        files = os.listdir(image_folder)
-        valid_extensions = {"jpg", "png", "webp", "jpeg"}
-        image_files = [file for file in files if file.split(".")[-1].lower() in valid_extensions]
-        image_urls = [url_for("static", filename=f"/images/panoramas/{image}") for image in image_files]
-        return jsonify(image_urls)
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
 
 
 
 
-@graveyard_views.route('/login_google', methods=['get'])
-def login_google():
-    return oauth_google()
 
 
 # @graveyard_views.route('/api/fetchUser', methods=['GET'])
@@ -63,29 +50,4 @@ def login_google():
 #     return jsonify(data)
 
 
-@graveyard_views.route('/callback', methods=['GET'])
-@cross_origin(supports_credentials=True)
-def callback_google():
-    response,status = google_callback()
-    # status_code = response.status_code
-    print(response.get_json())
-    data = response.get_json()
-    session['google_data'] = {
-        "id": data.get("id"),
-        "email": data.get("email"),
-        "name": data.get("name"),
-        "picture": data.get("picture")
-    }
 
-    redirect_response = redirect("http://localhost:3000/auth")
-    google_data = session.get('google_data', {})
-    print(google_data)
-    for key, value in google_data.items():
-        redirect_response.set_cookie(
-            key=key,
-            value=str(value),
-            samesite='None',
-            secure=True
-        )
-
-    return redirect_response

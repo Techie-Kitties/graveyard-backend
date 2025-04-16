@@ -9,3 +9,4 @@ from .payment import *
 from .eulogy import *
 from .tour import *
 from .package import *
+from .oauth import *

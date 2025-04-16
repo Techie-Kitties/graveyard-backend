@@ -1,31 +1,67 @@
-import flask_login
-from werkzeug.security import check_password_hash
+from flask_jwt_extended import create_access_token, jwt_required, JWTManager, get_jwt_identity, verify_jwt_in_request
+
 from App.models import User
-from App.controllers import get_user_by_username
 from App.database import db
 
-def authenticate(username, password):
-    user_data = get_user_by_username(username)
-    if user_data:
-        users_array = []
-        for user in user_data:
-            user_dict = user.to_dict()
-            user_dict['id'] = user.id
-            users_array.append(user_dict)
-        user = users_array[0]
-        if check_password_hash(user["password"], password):
-            return user
+
+def login(username, password):
+    user = User.query.filter_by(username=username).first()
+    if user and user.check_password(password):
+        print("CHECKS OUT")
+        return create_access_token(identity=username)
+    print("NOPE")
     return None
 
-# Payload is a dictionary which is passed to the function by Flask JWT
-def identity(payload):
-    return db.collection(u'Users').document(payload['identity']).get()
 
-def login_user(user, remember):
-    return flask_login.login_user(user, remember=remember)
 
-def logout_user():
-    flask_login.logout_user()
+def login_google_controller(google_data):
+    user = User.query.filter_by(google_id=google_data["id"]).first()
+    if user:
+        return create_access_token(identity=str(user.id))
+    else:
+        new_user = User(
+            google_id=google_data.get("id"),
+            username=google_data.get("name"),
+            password=None,  #no need for pw cuz oauth
+            role=3,  # should be user
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        return create_access_token(identity=str(new_user.id))
+
 
 def setup_jwt(app):
-    return (app, authenticate, identity)
+    jwt = JWTManager(app)
+
+    # configure's flask jwt to resolve get_current_identity() to the corresponding user's ID
+    @jwt.user_identity_loader
+    def user_identity_lookup(identity):
+        user = User.query.filter_by(username=identity).one_or_none()
+        if user:
+            return user.id
+        return None
+
+    @jwt.user_lookup_loader
+    def user_lookup_callback(_jwt_header, jwt_data):
+        identity = jwt_data["sub"]
+        return User.query.get(identity)
+
+    return jwt
+
+
+# Context processor to make 'is_authenticated' available to all templates
+def add_auth_context(app):
+    @app.context_processor
+    def inject_user():
+        try:
+            verify_jwt_in_request()
+            user_id = get_jwt_identity()
+            current_user = User.query.get(user_id)
+            is_authenticated = True
+        except Exception as e:
+            print(e)
+            is_authenticated = False
+            current_user = None
+        return dict(is_authenticated=is_authenticated, current_user=current_user)
+
+
