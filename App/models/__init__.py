@@ -8,16 +8,4 @@ from .payment import *
 from .navigationitem import *
 from .virtualscene import *
 from .metaItem import *
-from .bodypreparation import *
-from .floralwreath import *
-from .flowerarrangements import *
-from .funeraltransport import *
-from .familytransport import *
-from .professionalofficiant import *
-from .memorialprogram import *
-from .announcement import *
-from .multimediaslideshow import *
-from .prayerroom import *
-from .permanentcasket import *
-from .loweringdevice import *
 from .package import *
