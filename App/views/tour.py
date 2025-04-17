@@ -153,7 +153,7 @@ def save_scene_items():
 
     NavigationItem.query.filter_by(source_scene_id=source_scene.id).delete()
 
-    # Get the list of panorama files for arrow targets
+
     image_folder = os.path.join(os.path.dirname(__file__), "..", "static/images/panoramas")
     files = sorted([
         f for f in os.listdir(image_folder)
