@@ -16,10 +16,12 @@ tour_views = Blueprint('tour_views', __name__, template_folder='../templates')
 @cross_origin(supports_credentials=True)
 @jwt_required()
 def addScene():
-    user_id = get_jwt_identity()
+    user_id =  get_jwt_identity()
+    print(user_id)
     user = User.query.filter_by(id=user_id).first()
-    if user.role != 3:
-        return
+    if user.role != 1:
+        print("User role is ",user.role )
+        return "Error"
 
     # print("Got request")
     upload_folder = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'static', 'images', 'panoramas')
@@ -28,7 +30,7 @@ def addScene():
     if 'panorama' not in request.files:
         return jsonify({"error": "No image files provided"}), 400
     files = request.files.getlist('panorama')
-    # print(files)
+    print(files)
     if not files:
         return jsonify({"error": "No files to upload"}), 400
     filenames = []
@@ -41,15 +43,7 @@ def addScene():
         filename = secure_filename(str(datetime.timestamp(datetime.now())) + extension)
         file_path = os.path.join(upload_folder, filename)
         file.save(file_path)
-        filenames.append(filename)  # Collect filenames for response
-    # try:
-    #     data = request.json
-    #     navigation_items = data.get("navItems", [])
-    #     meta_items = data.get("metaItems", [])
-    # except Exception as e:
-    #     return jsonify({"error": f"Failed to parse JSON: {str(e)}"}), 400
-    # print("Navigation items:", navigation_items)
-    # print("Meta items:", meta_items)
+        filenames.append(filename)
     return jsonify({"message": "Virtual scene uploaded successfully", "filenames": filenames}), 200
 
 @tour_views.route('/api/getImages', methods=['get'])
@@ -123,14 +117,15 @@ def get_all_scenes():
         result.append(scene_data)
 
     return jsonify({"scenes": result})
+
 @tour_views.route('/api/saveScene', methods=['POST'])
 @cross_origin(supports_credentials=True)
 @jwt_required()
 def save_scene_items():
     user_id = get_jwt_identity()
     user = User.query.filter_by(id=user_id).first()
-    if user.role != 3:
-        return
+    # if user.role != 1:
+    #     return
     try:
         data = request.get_json()
     except Exception as e:
@@ -141,21 +136,14 @@ def save_scene_items():
     if not data:
         return jsonify({"error": "Missing JSON data"}), 400
 
-    panorama_index = data.get("currentPanorama")
+    panorama_url = data.get("currentPanorama")
     arrows = data.get("arrows", [])
     print(arrows)
     highlights = data.get("highlights", [])
 
-    image_folder = os.path.join(os.path.dirname(__file__), "..", "static/images/panoramas")
-    files = sorted([
-        f for f in os.listdir(image_folder)
-        if f.split(".")[-1].lower() in {"jpg", "png", "webp", "jpeg"}
-    ])
+    if not panorama_url:
+        return jsonify({"error": "Missing panorama URL"}), 400
 
-    if panorama_index is None or panorama_index >= len(files):
-        return jsonify({"error": "Invalid panorama index"}), 400
-
-    panorama_url = f"static/images/panoramas/{files[panorama_index]}"
     source_scene = VirtualScene.query.filter_by(panorama_url=panorama_url).first()
 
     if not source_scene:
@@ -164,6 +152,13 @@ def save_scene_items():
         db.session.commit()
 
     NavigationItem.query.filter_by(source_scene_id=source_scene.id).delete()
+
+    # Get the list of panorama files for arrow targets
+    image_folder = os.path.join(os.path.dirname(__file__), "..", "static/images/panoramas")
+    files = sorted([
+        f for f in os.listdir(image_folder)
+        if f.split(".")[-1].lower() in {"jpg", "png", "webp", "jpeg"}
+    ])
 
     for arrow in arrows:
         target_index = arrow.get("panorama")
@@ -212,7 +207,6 @@ def save_scene_items():
         print("Error saving scene:", str(e))
         return jsonify({"error": "Failed to save scene"}), 500
 
-
 @tour_views.route('/api/removeImage/<filename>', methods=['DELETE'])
 @cross_origin(supports_credentials=True)
 @jwt_required()
@@ -220,11 +214,10 @@ def remove_image(filename):
 
     user_id = get_jwt_identity()
     user = User.query.filter_by(id=user_id).first()
-    if user.role != 3:
+    if user.role != 1:
         return
     panorama_dir = os.path.join(os.path.dirname(__file__), "..", "static/images/panoramas")
     try:
-        # Validate and secure filename
         safe_filename = secure_filename(filename)
         if not safe_filename:
             return jsonify({"error": "Invalid filename"}), 400
@@ -276,7 +269,7 @@ def remove_image(filename):
 def save_all_scenes():
     user_id = get_jwt_identity()
     user = User.query.filter_by(id=user_id).first()
-    if user.role != 3:
+    if user.role != 1:
         return
     data = request.get_json()
     print(data)
@@ -284,19 +277,17 @@ def save_all_scenes():
         return jsonify({"error": "Missing scenes data"}), 400
 
     try:
-        # Clear existing data
         db.session.query(NavigationItem).delete()
         db.session.query(MetaItem).delete()
         db.session.query(VirtualScene).delete()
         db.session.commit()
 
-        # Process each scene
         for scene_data in data['scenes']:
             panorama_index = scene_data.get("currentPanorama")
             arrows = scene_data.get("arrows", [])
             highlights = scene_data.get("highlights", [])
 
-            # Get panorama filename by index
+
             image_folder = os.path.join(os.path.dirname(__file__), "..", "static/images/panoramas")
             files = sorted([
                 f for f in os.listdir(image_folder)
@@ -304,22 +295,20 @@ def save_all_scenes():
             ])
 
             if panorama_index is None or panorama_index >= len(files):
-                continue  # Skip invalid indices
+                continue
 
             panorama_url = f"static/images/panoramas/{files[panorama_index]}"
 
-            # Create new scene
             scene = VirtualScene(panorama_url=panorama_url)
             db.session.add(scene)
-            db.session.flush()  # Get the scene ID
+            db.session.flush()
 
-            # Add navigation items
+
             for arrow in arrows:
                 pos = arrow.get("position")
                 nav_item = NavigationItem(position=pos, virtualscene_id=scene.id)
                 scene.navigation_items.append(nav_item)
 
-            # Add meta items
             for highlight in highlights:
                 pos = highlight.get("position")
                 label = highlight.get("label", "")
