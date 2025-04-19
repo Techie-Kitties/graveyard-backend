@@ -61,7 +61,9 @@ affect anything realistically, but mentioning it just to be sure.
 ```
   
 # Flask Commands  
-  
-```
 The only flask command that is important, is the flask test unit to run the unit tests.
+```bash
+$flask test unit
 ```
+
+  
